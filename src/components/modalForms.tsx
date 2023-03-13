@@ -47,22 +47,26 @@ export const ModalForms = ({
   const [fieldsValues, setFieldsValues] = useState<Record<string, string>>({});
 
   const handleFieldChange = (fieldId: string, value: string) => {
+    // Creating dynamic states to avoid DRY
     setFieldsValues({...fieldsValues, [fieldId]: value});
   };
 
   const finishedModal = (task: {
-    name: string;
-    description: string;
-    date: string;
+    name?: string;
+    description?: string;
+    date?: string;
   }) => {
-    console.log('ss', {x: Object.values(task).length, task});
+    const requiredKeys = ['name', 'description', 'date'];
 
-    if (Object.values(task).length >= 3) {
+    var hasAll = Object.keys(task).every(key => requiredKeys.includes(key));
+
+    if (hasAll) {
+      // @ts-ignore until i know how to fix it lol
       setTasks(oldTasks => [...oldTasks, {id: oldTasks.length + 1, ...task}]);
       setVisible(false);
-    } else {
-      Alert.alert('Necessário preencher todos os campos');
     }
+
+    Alert.alert('Necessário preencher todos os campos');
   };
 
   return (
@@ -73,17 +77,12 @@ export const ModalForms = ({
           id={value}
           fieldValue={handleFieldChange}
           type={type as enumModelInput}
-          // @ts-ignore help meeeeeeeeeeeeeee
           value={fieldsValues[index]}
           key={index}
         />
       ))}
 
-      <TouchableOpacity
-        onPress={() =>
-          // @ts-ignore
-          finishedModal(fieldsValues)
-        }>
+      <TouchableOpacity onPress={() => finishedModal(fieldsValues)}>
         <View style={styles.modalButton}>
           <Text style={styles.buttonText}>Adicionar tarefa</Text>
         </View>
