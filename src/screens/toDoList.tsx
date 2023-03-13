@@ -9,7 +9,7 @@ import {
 import React, {useState} from 'react';
 import {ModalForms} from '../components/modalForms';
 import {AddTaskButton} from '../components/addTaskButton';
-import {OrderTaskButton} from '../components/OrderTaskButton';
+import {OrderTaskButton} from '../components/orderTaskButton';
 import type {TaskInterface} from '../types/task';
 import {sortByDate} from '../utils/sortByDate';
 
