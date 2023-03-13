@@ -60,10 +60,11 @@ export const ModalForms = ({
 
     var hasAll = Object.keys(task).every(key => requiredKeys.includes(key));
 
-    if (hasAll) {
+    if (hasAll && Object.keys(task).length === 3) {
       // @ts-ignore until i know how to fix it lol
       setTasks(oldTasks => [...oldTasks, {id: oldTasks.length + 1, ...task}]);
       setVisible(false);
+      return;
     }
 
     Alert.alert('Necessário preencher todos os campos');
