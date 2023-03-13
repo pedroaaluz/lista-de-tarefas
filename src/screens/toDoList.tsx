@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {ModalForms} from '../components/modalForms';
-import type {TaskInterface} from '../types/task';
 import {AddTaskButton} from '../components/addTaskButton';
-import {parse} from 'date-fns';
 import {OrderTaskButton} from '../components/OrderTaskButton';
+import type {TaskInterface} from '../types/task';
+import {sortByDate} from '../utils/sortByDate';
 
 const styles = StyleSheet.create({
   mainScreen: {
@@ -27,24 +27,6 @@ const styles = StyleSheet.create({
 });
 
 export const ToDoList = (): JSX.Element => {
-  const sortByDate = (
-    tasks: TaskInterface[],
-    order: 'asc' | 'desc',
-  ): TaskInterface[] => {
-    const sortedTasks = tasks.sort((a, b) => {
-      const dateA = parse(a.date, 'MM/dd/yyyy, HH:mm:ss', new Date());
-      const dateB = parse(b.date, 'MM/dd/yyyy, HH:mm:ss', new Date());
-
-      if (order === 'asc') {
-        return dateA.getTime() - dateB.getTime();
-      } else {
-        return dateB.getTime() - dateA.getTime();
-      }
-    });
-
-    return sortedTasks;
-  };
-
   const [tasks, setTasks] = useState<TaskInterface[]>([
     {
       id: 233,
@@ -57,7 +39,7 @@ export const ToDoList = (): JSX.Element => {
   const [visible, setVisible] = useState(false);
   const [dateOrder, setDateOrder] = useState<'asc' | 'desc'>('asc');
 
-  const renderItem = ({item}: ListRenderItemInfo<TaskInterface>) => {
+  const renderCard = ({item}: ListRenderItemInfo<TaskInterface>) => {
     const {name, description, date, id} = item;
 
     return (
@@ -89,7 +71,7 @@ export const ToDoList = (): JSX.Element => {
 
       <FlatList
         data={tasks}
-        renderItem={renderItem}
+        renderItem={renderCard}
         keyExtractor={item => item.id.toString()}
       />
       <OrderTaskButton
