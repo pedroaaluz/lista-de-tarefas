@@ -30,6 +30,29 @@ type SectionProps = PropsWithChildren<{
   type: enumModelInput;
 }>;
 
+type ButtonSelectorInterface = Omit<SectionProps, 'type'>;
+
+const buttonSelector = {
+  date: (params: ButtonSelectorInterface) => (
+    <DatePicker
+      label={params.label}
+      id={params.id}
+      value={params.value}
+      fieldValue={params.fieldValue}
+    />
+  ),
+  text: (params: ButtonSelectorInterface) => (
+    <>
+      <Text style={styles.inputLabel}>{params.label}</Text>
+      <TextInput
+        onChangeText={text => params.fieldValue(params.id, text)}
+        value={params.value}
+        style={styles.input}
+      />
+    </>
+  ),
+};
+
 export const ModalInput = ({
   label,
   fieldValue,
@@ -37,27 +60,5 @@ export const ModalInput = ({
   type,
   value,
 }: SectionProps): JSX.Element => {
-  return (
-    <View>
-      {type === 'text' ? (
-        <>
-          <Text style={styles.inputLabel}>{label}</Text>
-          <TextInput
-            onChangeText={text => fieldValue(id, text)}
-            value={value}
-            style={styles.input}
-          />
-        </>
-      ) : (
-        <>
-          <DatePicker
-            label={label}
-            id={id}
-            value={value}
-            fieldValue={fieldValue}
-          />
-        </>
-      )}
-    </View>
-  );
+  return <View>{buttonSelector[type]({label, id, value, fieldValue})}</View>;
 };
