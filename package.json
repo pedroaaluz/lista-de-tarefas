@@ -10,10 +10,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-native-community/datetimepicker": "^6.7.5",
     "date-fns": "^2.29.3",
     "react": "18.2.0",
     "react-native": "0.71.4",
+    "react-native-date-picker": "^4.2.9",
     "react-native-datepicker": "^1.7.2"
   },
   "devDependencies": {

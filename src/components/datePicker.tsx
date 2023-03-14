@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import DateTimePicker, {
+/* import DateTimePicker, {
   DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
-import {format} from 'date-fns';
+} from '@react-native-community/datetimepicker'; */
+import DateTimePicker from 'react-native-date-picker';
+import {formatDate} from '../utils/formatDate';
 
 const styles = StyleSheet.create({
   input: {
@@ -43,25 +44,19 @@ export const DatePicker = ({
 }: SectionProps): JSX.Element => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date());
 
-  const onChange = (
-    event: DateTimePickerEvent,
-    selectedDate?: Date | undefined,
-  ) => {
-    const currentDate = selectedDate;
+  const currentDate = new Date();
 
-    if (!currentDate) {
+  const onChange = (selectedDate?: Date | undefined) => {
+    if (!selectedDate) {
       throw new Error('Error in datepicker');
     }
 
-    const formatString = 'MM/dd/yyyy, HH:mm:ss';
-    const formatDate = format(currentDate, formatString);
-
     setShowDatePicker(false);
 
-    fieldValue(id, formatDate);
-    setDate(formatDate);
+    fieldValue(id, formatDate(selectedDate));
+    setDate(new Date());
   };
 
   return (
@@ -70,18 +65,25 @@ export const DatePicker = ({
       <TouchableOpacity
         onPress={() => setShowDatePicker(true)}
         style={styles.input}>
-        <Text style={styles.date}>{date}</Text>
-
-        {showDatePicker && (
-          <DateTimePicker
-            onChange={onChange}
-            value={new Date()}
-            display="clock"
-            mode="time"
-            is24Hour={true}
-          />
-        )}
+        <Text style={styles.date}>{formatDate(date)}</Text>
       </TouchableOpacity>
+      <DateTimePicker
+        open={showDatePicker}
+        date={date}
+        modal={true}
+        is24hourSource={'locale'}
+        mode={'datetime'}
+        onConfirm={newDate => {
+          setShowDatePicker(false);
+          onChange(newDate);
+        }}
+        onCancel={() => {
+          setShowDatePicker(false);
+        }}
+        confirmText="Confirmar"
+        cancelText="Cancelar"
+        minimumDate={currentDate}
+      />
     </>
   );
 };
