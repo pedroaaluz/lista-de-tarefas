@@ -78,10 +78,8 @@ export const ToDoList = (): JSX.Element => {
         order={dateOrder}
         onPressFunc={() => {
           setDateOrder(order => (order === 'desc' ? 'asc' : 'desc'));
-          console.log(dateOrder);
 
           const orderedTasks = sortByDate(tasks, dateOrder);
-          console.log(orderedTasks);
           setTasks(orderedTasks);
         }}
       />
