@@ -56,7 +56,7 @@ export const DatePicker = ({
     setShowDatePicker(false);
 
     fieldValue(id, formatDate(selectedDate));
-    setDate(new Date());
+    setDate(selectedDate);
   };
 
   return (
