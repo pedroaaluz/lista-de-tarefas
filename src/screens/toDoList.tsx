@@ -37,7 +37,7 @@ export const ToDoList = (): JSX.Element => {
   ]);
 
   const [visible, setVisible] = useState(false);
-  const [dateOrder, setDateOrder] = useState<'asc' | 'desc'>('asc');
+  const [dateOrder, setDateOrder] = useState<'asc' | 'desc'>('desc');
 
   const renderCard = ({item}: ListRenderItemInfo<TaskInterface>) => {
     const {name, description, date, id} = item;
